@@ -1,0 +1,11 @@
+# Ignore everything in the root directory
+/*
+
+# Keep .gitignore itself
+!/.gitignore
+
+# Include only these four folders
+!/drivers/
+!/Inc/
+!/Src/
+!/Startup/
