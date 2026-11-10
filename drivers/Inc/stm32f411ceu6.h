@@ -5,6 +5,22 @@
 
 #define __vo volatile
 
+// Processor specific details
+// NVIC  ISERx register addresses
+#define NVIC_ISER0      ( (__vo uint32_t*)0xE000E100)
+#define NVIC_ISER1		( (__vo uint32_t*)0xE000E104)
+#define NVIC_ISER2		( (__vo uint32_t*)0xE000E108)
+
+// NVIC  CSERx register addresses
+#define NVIC_ICER0      ( (__vo uint32_t*)0xE000E180)
+#define NVIC_ICER1      ( (__vo uint32_t*)0xE000E184)
+#define NVIC_ICER2      ( (__vo uint32_t*)0xE000E188)
+
+// NVIC  IPR register addresses
+#define NVIC_PR_BASE_ADDR  ( (__vo uint32_t*)0xE000E400)
+
+#define NO_PR_BASE_IMPLEMENTED        4
+
 // Base addresses of flash and SRAM memories
 
 #define FLASH_BASEADDR    0x08000000U //512KB
@@ -95,6 +111,26 @@ typedef struct{
 	__vo uint32_t DCKCFGR;		//RCC Dedicated Clocks Configuration Register                  Addr Offset: 0x8C
 }RCC_RegDef_t;
 
+
+// EXTI
+typedef struct {
+	__vo uint32_t IMR;		    //Interrupt mask register                Addr offset: 0x00
+	__vo uint32_t EMR;			//Event mask register                    Addr offset: 0x04
+	__vo uint32_t RTSR;			//Rising trigger selection register      Addr offset: 0x08
+	__vo uint32_t FTSR;			//Falling trigger selection register     Addr offset: 0x0C
+	__vo uint32_t SWIER;		//Software interrupt event register 	 Addr offset: 0x10
+	__vo uint32_t PR;			//Pending register						 Addr offset: 0x14
+}EXTI_RegDef_t;
+
+// SYSCFG
+typedef struct {
+	__vo uint32_t MEMRMP;		//Memory remap register                            Addr offset: 0x00
+	__vo uint32_t PMC;			//Peripheral mode configuration register           Addr offset: 0x04
+	__vo uint32_t EXTICR[4];	//External interrupt configuration registers       Addr offset: 0x08 - 0x14
+	__vo uint32_t RESERVED[2];	//Reserved   									   Addr offset: 0x18-0x1C
+	__vo uint32_t CMPCR;		//Compensation cell control register  	           Addr offset: 0x20
+}SYSCFG_RegDef_t;
+
 // GPIO definition
 
 #define GPIOA            ((GPIO_RegDef_t*)GPIOA_BASEADDR)
@@ -107,6 +143,13 @@ typedef struct{
 // RCC definition
 
 #define RCC              ((RCC_RegDef_t*)RCC_BASEADDR)
+
+// EXTI definition
+#define EXTI             ((EXTI_RegDef_t*)EXTI_BASEADDR)
+
+// SYSCFG definition
+#define SYSCFG           ((SYSCFG_RegDef_t*)SYSCFG_BASEADDR)
+
 
 // Clock enable for GPIOx
 
@@ -190,5 +233,23 @@ typedef struct{
 #define RESET            DISABLE
 #define GPIO_PIN_SET     SET
 #define GPIO_PIN_RESET   RESET
+
+// This macro returns code between 0 to 7 for given GPIO port addr
+#define GPIO_BASEADDR_TO_CODE(x)      ( (x == GPIOA)?0:\
+										(x == GPIOB)?1:\
+										(x == GPIOC)?2:\
+										(x == GPIOD)?3:\
+										(x == GPIOE)?4:\
+										(x == GPIOH)?7:0)
+
+// IRQ number definition
+#define IRQ_NO_EXTI0        6
+#define IRQ_NO_EXTI1		7
+#define IRQ_NO_EXTI2		8
+#define IRQ_NO_EXTI3		9
+#define IRQ_NO_EXTI4		10
+#define IRQ_NO_EXTI9_5		23
+#define IRQ_NO_EXTI15_10	40
+
 
 #endif /* INC_STM32F411CEU6_H_ */
