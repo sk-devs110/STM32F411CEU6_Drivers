@@ -1,10 +1,3 @@
-/*
- * stm32f411ceu6.h
- *
- *  Created on: Nov 4, 2026
- *      Author: sanjay
- */
-
 #ifndef INC_STM32F411CEU6_H_
 #define INC_STM32F411CEU6_H_
 
@@ -47,13 +40,13 @@
 
 // Base addresses of peripherals hanging on APB2 bus
 
-#define SPI1_BASEADDR     (AHB2PERIPH_BASE + 0x3000)
-#define SPI4_BASEADDR     (AHB2PERIPH_BASE + 0x3400)
-#define SPI5_BASEADDR     (AHB2PERIPH_BASE + 0x5000)
-#define USART1_BASEADDR   (AHB2PERIPH_BASE + 0x1000)
-#define USART6_BASEADDR   (AHB2PERIPH_BASE + 0x1400)
-#define EXTI_BASEADDR     (AHB2PERIPH_BASE + 0x3C00)
-#define SYSCFG_BASEADDR   (AHB2PERIPH_BASE + 0x3800)
+#define SPI1_BASEADDR     (APB2PERIPH_BASE + 0x3000)
+#define SPI4_BASEADDR     (APB2PERIPH_BASE + 0x3400)
+#define SPI5_BASEADDR     (APB2PERIPH_BASE + 0x5000)
+#define USART1_BASEADDR   (APB2PERIPH_BASE + 0x1000)
+#define USART6_BASEADDR   (APB2PERIPH_BASE + 0x1400)
+#define EXTI_BASEADDR     (APB2PERIPH_BASE + 0x3C00)
+#define SYSCFG_BASEADDR   (APB2PERIPH_BASE + 0x3800)
 
 // Peripheral  structures
 //GPIO
@@ -102,7 +95,7 @@ typedef struct{
 	__vo uint32_t DCKCFGR;		//RCC Dedicated Clocks Configuration Register                  Addr Offset: 0x8C
 }RCC_RegDef_t;
 
-//GPIO definition
+// GPIO definition
 
 #define GPIOA            ((GPIO_RegDef_t*)GPIOA_BASEADDR)
 #define GPIOB            ((GPIO_RegDef_t*)GPIOB_BASEADDR)
@@ -111,9 +104,91 @@ typedef struct{
 #define GPIOE            ((GPIO_RegDef_t*)GPIOE_BASEADDR)
 #define GPIOH            ((GPIO_RegDef_t*)GPIOH_BASEADDR)
 
-//RCC definition
+// RCC definition
 
 #define RCC              ((RCC_RegDef_t*)RCC_BASEADDR)
 
+// Clock enable for GPIOx
+
+#define GPIOA_PCLK_EN()  (RCC->AHB1ENR |= (1<<0))
+#define GPIOB_PCLK_EN()  (RCC->AHB1ENR |= (1<<1))
+#define GPIOC_PCLK_EN()  (RCC->AHB1ENR |= (1<<2))
+#define GPIOD_PCLK_EN()  (RCC->AHB1ENR |= (1<<3))
+#define GPIOE_PCLK_EN()  (RCC->AHB1ENR |= (1<<4))
+#define GPIOH_PCLK_EN()  (RCC->AHB1ENR |= (1<<7))
+
+// Clock enable for I2Cx
+
+#define I2C1_PCLK_EN()   (RCC->APB1ENR |= (1<<21))
+#define I2C2_PCLK_EN()   (RCC->APB1ENR |= (1<<22))
+#define I2C3_PCLK_EN()   (RCC->APB1ENR |= (1<<23))
+
+// Clock enable for SPIx
+
+#define SPI1_PCLK_EN()   (RCC->APB2ENR |= (1<<12))
+#define SPI2_PCLK_EN()   (RCC->APB1ENR |= (1<<14))
+#define SPI3_PCLK_EN()   (RCC->APB1ENR |= (1<<15))
+#define SPI4_PCLK_EN()   (RCC->APB2ENR |= (1<<13))
+#define SPI5_PCLK_EN()   (RCC->APB2ENR |= (1<<20))
+
+// Clock enable for USARTx
+
+#define USART1_PCLK_EN() (RCC->APB2ENR |= (1<<4))
+#define USART2_PCLK_EN() (RCC->APB1ENR |= (1<<17))
+#define USART6_PCLK_EN() (RCC->APB2ENR |= (1<<5))
+
+// Clock enable for SYSCFG
+
+#define SYSCFG_PCLK_EN() (RCC->APB2ENR |= (1<<14))
+
+// Clock disable for GPIOx
+
+#define GPIOA_PCLK_DI()  (RCC->AHB1ENR &= ~(1<<0))
+#define GPIOB_PCLK_DI()  (RCC->AHB1ENR &= ~(1<<1))
+#define GPIOC_PCLK_DI()  (RCC->AHB1ENR &= ~(1<<2))
+#define GPIOD_PCLK_DI()  (RCC->AHB1ENR &= ~(1<<3))
+#define GPIOE_PCLK_DI()  (RCC->AHB1ENR &= ~(1<<4))
+#define GPIOH_PCLK_DI()  (RCC->AHB1ENR &= ~(1<<7))
+
+// Clock disable for I2Cx
+
+#define I2C1_PCLK_DI()   (RCC->APB1ENR &= ~(1<<21))
+#define I2C2_PCLK_DI()   (RCC->APB1ENR &= ~(1<<22))
+#define I2C3_PCLK_DI()   (RCC->APB1ENR &= ~(1<<23))
+
+// Clock disable for SPIx
+
+#define SPI1_PCLK_DI()   (RCC->APB2ENR &= ~(1<<12))
+#define SPI2_PCLK_DI()   (RCC->APB1ENR &= ~(1<<14))
+#define SPI3_PCLK_DI()   (RCC->APB1ENR &= ~(1<<15))
+#define SPI4_PCLK_DI()   (RCC->APB2ENR &= ~(1<<13))
+#define SPI5_PCLK_DI()   (RCC->APB2ENR &= ~(1<<20))
+
+// Clock disable for USARTx
+
+#define USART1_PCLK_DI() (RCC->APB2ENR &= ~(1<<4))
+#define USART2_PCLK_DI() (RCC->APB1ENR &= ~(1<<17))
+#define USART6_PCLK_DI() (RCC->APB2ENR &= ~(1<<5))
+
+// Clock disable for SYSCFG
+
+#define SYSCFG_PCLK_DI() (RCC->APB2ENR &= ~(1<<14))
+
+//GPIOx peripheral reset macros
+#define GPIOA_REG_RESET()  do{(RCC->AHB1RSTR |= (1<<0));	(RCC->AHB1RSTR &= ~(1<<0));} while(0)
+#define GPIOB_REG_RESET()  do{(RCC->AHB1RSTR |= (1<<1));	(RCC->AHB1RSTR &= ~(1<<1));} while(0)
+#define GPIOC_REG_RESET()  do{(RCC->AHB1RSTR |= (1<<2));	(RCC->AHB1RSTR &= ~(1<<2));} while(0)
+#define GPIOD_REG_RESET()  do{(RCC->AHB1RSTR |= (1<<3));	(RCC->AHB1RSTR &= ~(1<<3));} while(0)
+#define GPIOE_REG_RESET()  do{(RCC->AHB1RSTR |= (1<<4));	(RCC->AHB1RSTR &= ~(1<<4));} while(0)
+#define GPIOH_REG_RESET()  do{(RCC->AHB1RSTR |= (1<<7));	(RCC->AHB1RSTR &= ~(1<<7));} while(0)
+
+//Some generic macros
+
+#define ENABLE           1
+#define DISABLE          0
+#define SET              ENABLE
+#define RESET            DISABLE
+#define GPIO_PIN_SET     SET
+#define GPIO_PIN_RESET   RESET
 
 #endif /* INC_STM32F411CEU6_H_ */
